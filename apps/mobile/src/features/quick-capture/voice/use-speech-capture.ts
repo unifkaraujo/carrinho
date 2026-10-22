@@ -1,7 +1,7 @@
-import { useSpeechRecognitionEvent } from 'expo-speech-recognition';
 import { useRef, useState } from 'react';
 import { describeSpeechError } from './describe-speech-error';
 import { startSpeechRecognition, stopSpeechRecognition } from './start-speech-recognition';
+import { useOwnedSpeechEvents } from './use-owned-speech-events';
 
 const PERMISSION_DENIED_MESSAGE = 'Permita o uso do microfone para adicionar por voz.';
 
@@ -16,19 +16,17 @@ export const useSpeechCapture = (onFinalTranscript: (transcript: string) => void
     setListening(false);
   };
 
-  useSpeechRecognitionEvent('end', () => {
-    if (ownsRecognition.current) release();
-  });
-  useSpeechRecognitionEvent('error', (event) => {
-    if (!ownsRecognition.current) return;
-    setError(describeSpeechError(event.error));
-    release();
-  });
-  useSpeechRecognitionEvent('result', (event) => {
-    if (!ownsRecognition.current) return;
-    const text = event.results[0]?.transcript ?? '';
-    setTranscript(text);
-    if (event.isFinal && text) onFinalTranscript(text);
+  useOwnedSpeechEvents(ownsRecognition, {
+    onEnd: release,
+    onError: (code) => {
+      setError(describeSpeechError(code));
+      release();
+    },
+    onResult: (event) => {
+      const text = event.results[0]?.transcript ?? '';
+      setTranscript(text);
+      if (event.isFinal && text) onFinalTranscript(text);
+    },
   });
 
   const start = async () => {
