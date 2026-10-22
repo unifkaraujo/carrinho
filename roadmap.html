@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Meu Mercado — Roadmap</title>
+    <style>
+      :root {
+        --bg: #f6f7f4;
+        --card: #ffffff;
+        --text: #1d2420;
+        --muted: #6b746e;
+        --accent: #2f8f5b;
+        --border: #e2e6e1;
+        color-scheme: light;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #141816;
+          --card: #1d2320;
+          --text: #e6ebe7;
+          --muted: #8d978f;
+          --accent: #5cc48a;
+          --border: #2c3430;
+          color-scheme: dark;
+        }
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          15px/1.5 system-ui,
+          sans-serif;
+        padding: 32px 16px;
+      }
+      main {
+        max-width: 640px;
+        margin: 0 auto;
+      }
+      h1 {
+        margin: 0 0 4px;
+        font-size: 24px;
+      }
+      .progress {
+        color: var(--muted);
+        margin-bottom: 12px;
+      }
+      .bar {
+        height: 8px;
+        background: var(--border);
+        border-radius: 99px;
+        overflow: hidden;
+        margin-bottom: 24px;
+      }
+      .bar > div {
+        height: 100%;
+        background: var(--accent);
+        width: 0;
+        transition: width 0.3s;
+      }
+      ol {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 8px;
+      }
+      label {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px 14px;
+        cursor: pointer;
+      }
+      input {
+        width: 18px;
+        height: 18px;
+        margin-top: 2px;
+        accent-color: var(--accent);
+        flex-shrink: 0;
+      }
+      .n {
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+        min-width: 1.5em;
+      }
+      strong {
+        display: block;
+      }
+      small {
+        color: var(--muted);
+      }
+      input:checked ~ span {
+        opacity: 0.55;
+      }
+      input:checked ~ span strong {
+        text-decoration: line-through;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Meu Mercado</h1>
+      <div class="progress" id="progress"></div>
+      <div class="bar"><div id="bar"></div></div>
+      <ol id="steps"></ol>
+    </main>
+    <script>
+      const steps = [
+        ['Setup', 'Monorepo, CLAUDE.md, TS strict, ESLint/Prettier, Vitest'],
+        ['Domínio compartilhado', 'normalizeItemName + parseCaptureText com testes'],
+        ['API mínima no ar', 'D1 + POST /capture + GET /items com token de captura'],
+        ['Validação real', 'HTTP Shortcuts: widget + voz chamando /capture'],
+        ['Auth', 'Better Auth na API + login/cadastro no app'],
+        ['Lista no app', 'Pendentes por categoria, comprar, remover, comprados + limpar'],
+        ['Adicionar no app', 'Texto + voz, editar quantidade/unidade/categoria'],
+        ['Offline', 'Cache persistido + fila de mutations'],
+        ['Captura nativa', 'Widget com microfone + tela transparente + atalhos do ícone'],
+        ['Tokens de captura', 'Gerar e revogar tokens no app'],
+        ['App Actions / Gemini', 'Pós-publicação na Play Store'],
+      ];
+      const key = 'meu-mercado-roadmap';
+      const load = () => {
+        try {
+          return JSON.parse(localStorage.getItem(key)) || {};
+        } catch {
+          return {};
+        }
+      };
+      const save = (state) => {
+        try {
+          localStorage.setItem(key, JSON.stringify(state));
+        } catch {}
+      };
+      const state = load();
+      const list = document.getElementById('steps');
+      const render = () => {
+        const done = steps.filter((_, i) => state[i]).length;
+        document.getElementById('progress').textContent =
+          `${done} de ${steps.length} etapas concluídas`;
+        document.getElementById('bar').style.width = `${(done / steps.length) * 100}%`;
+      };
+      steps.forEach(([title, detail], i) => {
+        const li = document.createElement('li');
+        li.innerHTML = `<label><input type="checkbox"><span class="n">${i}</span><span><strong>${title}</strong><small>${detail}</small></span></label>`;
+        const box = li.querySelector('input');
+        box.checked = Boolean(state[i]);
+        box.addEventListener('change', () => {
+          state[i] = box.checked;
+          save(state);
+          render();
+        });
+        list.appendChild(li);
+      });
+      render();
+    </script>
+  </body>
+</html>

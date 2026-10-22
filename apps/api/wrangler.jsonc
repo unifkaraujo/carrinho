@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "meu-mercado-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    "BETTER_AUTH_URL": "https://meu-mercado-api.meu-mercado-api.workers.dev",
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "meu-mercado",
+      "database_id": "f98f0f53-59c8-45d5-9c08-7185f7aa0e8a",
+      "migrations_dir": "migrations",
+    },
+  ],
+}

@@ -1,0 +1,16 @@
+export const COMMAND_WORDS: ReadonlySet<string> = new Set([
+  'adicionar',
+  'adiciona',
+  'adicione',
+  'comprar',
+  'compra',
+  'compre',
+  'colocar',
+  'coloca',
+  'coloque',
+  'incluir',
+  'inclui',
+  'inclua',
+  'botar',
+  'bota',
+]);
