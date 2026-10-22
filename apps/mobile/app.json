@@ -28,14 +28,13 @@
         }
       ],
       "expo-secure-store",
-      "expo-font"
+      "expo-font",
+      "expo-speech-recognition"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
     },
-    "platforms": [
-      "android"
-    ]
+    "platforms": ["android"]
   }
 }

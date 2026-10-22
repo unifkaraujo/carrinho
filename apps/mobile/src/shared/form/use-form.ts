@@ -4,16 +4,19 @@ import { toFieldErrors, type FieldErrors } from './to-field-errors';
 
 type FormValues = Record<string, string>;
 
-export const useForm = <T extends FormValues>(schema: z.ZodType<T>, initialValues: T) => {
+export const useForm = <TValues extends FormValues, TOutput = TValues>(
+  schema: z.ZodType<TOutput, TValues>,
+  initialValues: TValues,
+) => {
   const [values, setValues] = useState(initialValues);
-  const [errors, setErrors] = useState<FieldErrors<T>>({});
+  const [errors, setErrors] = useState<FieldErrors<TValues>>({});
 
-  const setField = (field: keyof T) => (value: string) =>
+  const setField = (field: keyof TValues) => (value: string) =>
     setValues((current) => ({ ...current, [field]: value }));
 
-  const validate = (): T | null => {
+  const validate = (): TOutput | null => {
     const result = schema.safeParse(values);
-    setErrors(result.success ? {} : toFieldErrors(result.error));
+    setErrors(result.success ? {} : toFieldErrors<TValues>(result.error));
     return result.success ? result.data : null;
   };
 

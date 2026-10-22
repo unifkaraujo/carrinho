@@ -3,6 +3,7 @@ import { formatItemAmount, hasRelevantAmount } from '@meu-mercado/shared';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors, fontSize, radius, spacing } from '../../../shared/ui/theme';
 import type { Item } from '../domain/item';
+import { isLocalItem } from '../domain/local-item';
 
 interface ItemRowProps {
   item: Item;
@@ -13,8 +14,9 @@ interface ItemRowProps {
 
 export const ItemRow = ({ item, onToggle, onRemove, onPress }: ItemRowProps) => {
   const bought = item.status === 'bought';
+  const syncing = isLocalItem(item);
   return (
-    <View style={styles.row}>
+    <View style={[styles.row, syncing && styles.syncing]}>
       <Pressable
         accessibilityRole="checkbox"
         accessibilityState={{ checked: bought }}
@@ -57,6 +59,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm + spacing.xs,
     marginBottom: spacing.sm,
   },
+  syncing: { opacity: 0.5, pointerEvents: 'none' },
   content: { flex: 1, gap: 2 },
   name: { fontSize: fontSize.md, color: colors.text },
   boughtName: { color: colors.muted, textDecorationLine: 'line-through' },
