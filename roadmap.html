@@ -92,6 +92,7 @@
         display: block;
       }
       small {
+        display: block;
         color: var(--muted);
       }
       input:checked ~ span {
@@ -99,6 +100,24 @@
       }
       input:checked ~ span strong {
         text-decoration: line-through;
+      }
+      .badge {
+        display: inline-block;
+        margin-top: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 99px;
+        background: var(--border);
+        color: var(--muted);
+      }
+      .badge.ok {
+        background: var(--accent);
+        color: var(--card);
+      }
+      .badge.test {
+        background: #e8a33d;
+        color: #1d2420;
       }
     </style>
   </head>
@@ -110,18 +129,23 @@
       <ol id="steps"></ol>
     </main>
     <script>
+      const STATUS = {
+        ok: ['ok', 'Validado'],
+        test: ['test', 'Implementado: testar no celular'],
+        todo: ['', 'Pendente'],
+      };
       const steps = [
-        ['Setup', 'Monorepo, CLAUDE.md, TS strict, ESLint/Prettier, Vitest'],
-        ['Domínio compartilhado', 'normalizeItemName + parseCaptureText com testes'],
-        ['API mínima no ar', 'D1 + POST /capture + GET /items com token de captura'],
-        ['Validação real', 'HTTP Shortcuts: widget + voz chamando /capture'],
-        ['Auth', 'Better Auth na API + login/cadastro no app'],
-        ['Lista no app', 'Pendentes por categoria, comprar, remover, comprados + limpar'],
-        ['Adicionar no app', 'Texto + voz, editar quantidade/unidade/categoria'],
-        ['Offline', 'Cache persistido + fila de mutations'],
-        ['Captura nativa', 'Widget com microfone + tela transparente + atalhos do ícone'],
-        ['Tokens de captura', 'Gerar e revogar tokens no app'],
-        ['App Actions / Gemini', 'Pós-publicação na Play Store'],
+        ['Setup', 'Monorepo, CLAUDE.md, TS strict, ESLint/Prettier, Vitest', 'ok'],
+        ['Domínio compartilhado', 'normalizeItemName + parseCaptureText com testes', 'ok'],
+        ['API mínima no ar', 'D1 + POST /capture + GET /items com token de captura', 'ok'],
+        ['Validação real', 'HTTP Shortcuts: widget + voz chamando /capture', 'ok'],
+        ['Auth', 'Better Auth na API + login/cadastro no app', 'test'],
+        ['Lista no app', 'Pendentes por categoria, comprar, remover, comprados + limpar', 'test'],
+        ['Adicionar no app', 'Texto + voz, editar quantidade/unidade/categoria', 'test'],
+        ['Offline', 'Cache persistido + fila de mutations', 'test'],
+        ['Captura nativa', 'Widget com microfone + tela de captura + atalhos do ícone', 'test'],
+        ['Tokens de captura', 'Gerar e revogar tokens no app, alterar senha', 'test'],
+        ['App Actions / Gemini', 'Pós-publicação na Play Store', 'todo'],
       ];
       const key = 'meu-mercado-roadmap';
       const load = () => {
@@ -144,9 +168,10 @@
           `${done} de ${steps.length} etapas concluídas`;
         document.getElementById('bar').style.width = `${(done / steps.length) * 100}%`;
       };
-      steps.forEach(([title, detail], i) => {
+      steps.forEach(([title, detail, status], i) => {
+        const [badgeClass, badgeLabel] = STATUS[status];
         const li = document.createElement('li');
-        li.innerHTML = `<label><input type="checkbox"><span class="n">${i}</span><span><strong>${title}</strong><small>${detail}</small></span></label>`;
+        li.innerHTML = `<label><input type="checkbox"><span class="n">${i}</span><span><strong>${title}</strong><small>${detail}</small><span class="badge ${badgeClass}">${badgeLabel}</span></span></label>`;
         const box = li.querySelector('input');
         box.checked = Boolean(state[i]);
         box.addEventListener('change', () => {

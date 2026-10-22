@@ -20,4 +20,10 @@ describe('password hashing', () => {
   it('rejeita hash em formato desconhecido', async () => {
     expect(await verifyPassword({ hash: 'scrypt:abc', password: 'x' })).toBe(false);
   });
+
+  it('verifica hash gerado com outra quantidade de iterações', async () => {
+    const hash = await hashPassword('senha-forte-123', 10_000);
+    expect(hash).toContain('$10000$');
+    expect(await verifyPassword({ hash, password: 'senha-forte-123' })).toBe(true);
+  });
 });

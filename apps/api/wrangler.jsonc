@@ -6,6 +6,7 @@
   "compatibility_flags": ["nodejs_compat"],
   "vars": {
     "BETTER_AUTH_URL": "https://meu-mercado-api.meu-mercado-api.workers.dev",
+    "PASSWORD_HASH_ITERATIONS": "100000",
   },
   "d1_databases": [
     {

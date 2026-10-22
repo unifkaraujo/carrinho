@@ -5,6 +5,7 @@ export interface AppBindings {
   DB: D1Database;
   BETTER_AUTH_SECRET: string;
   BETTER_AUTH_URL: string;
+  PASSWORD_HASH_ITERATIONS?: string;
 }
 
 export interface AppEnv {

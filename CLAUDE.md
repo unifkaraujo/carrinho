@@ -40,23 +40,30 @@ apps/
   mobile/src/
     app/                       (expo-router, telas finas)
     features/<feature>/{domain,data,hooks,components,screens}
-    shared/{http,config,ui}
+    shared/{config,form,http,query,storage,ui}
+    bootstrap/                 (QueryClient, providers, integrações entre features)
+  mobile/index.ts              (entry: expo-router + registro do widget)
 packages/
   shared/src/                  (regras de domínio usadas no app e na API)
 ```
 
 Features da API: `auth`, `capture-tokens`, `items`, `categories`, `capture`.
-Features do app: `auth`, `shopping-list`, `categories`, `quick-capture` (`voice/`, `widget/`, `shortcuts/`), `settings`.
+Features do app: `auth`, `shopping-list`, `categories`, `quick-capture` (`voice/`, `widget/`, `shortcuts/`), `capture-tokens`, `settings`.
 
 ## Decisões de domínio
 
 - **Multiusuário**: todo dado pertence a um `user_id`. Compartilhar lista no futuro = migrar para `list_id` + `list_members`.
 - **Credenciais**:
-  - Sessão do app (Better Auth) — usada pelo app, widget e captura por voz (guardada em `expo-secure-store`).
-  - Token de captura pessoal — para atalhos externos (HTTP Shortcuts, futuramente Assistant). Banco guarda só o hash.
+  - Sessão do app (Better Auth, plugin `bearer`) — usada pelo app, widget e captura por voz (guardada em `expo-secure-store`). Sem cookies, então a checagem de Origin do Better Auth não se aplica ao app.
+  - Token de captura pessoal (prefixo `mm_`) — para atalhos externos. Banco guarda só o hash SHA-256.
+  - `requireUser` aceita os dois; `requireSession` só sessão (usado em `/capture-tokens`).
+- **Senhas**: PBKDF2-SHA256 via Web Crypto (hash próprio, não o scrypt padrão do Better Auth, por causa do limite de CPU do Workers). Iterações em `PASSWORD_HASH_ITERATIONS` (wrangler vars); o hash guarda as iterações usadas, então dá para mudar sem invalidar senhas.
 - **Endpoints**:
   - `POST /capture { text }` — texto livre ("2 dúzias de ovos"); a API interpreta quantidade/unidade e aplica a dedup. Entrada universal para atalhos.
-  - `GET /items`, `POST /items`, `PATCH /items/:id`, `DELETE /items/:id`, `DELETE /items/bought` — CRUD do app.
+  - `GET /items?status=`, `PATCH /items/:id`, `DELETE /items/:id`, `DELETE /items/bought` — app (adicionar no app também usa `/capture`).
+  - `GET/POST /categories`, `DELETE /categories/:id`. Categorias padrão criadas no cadastro (hook `databaseHooks.user.create.after`).
+  - `GET/POST /capture-tokens`, `DELETE /capture-tokens/:id`.
+  - `/api/auth/*` — Better Auth (sign-up/sign-in/sign-out/get-session/change-password).
 - **Item**: `name`, `quantity` (número, padrão 1), `unit` (opcional, texto livre), `category_id` (opcional, categorias por usuário), `status` (`pending` | `bought`).
 - **Duplicatas**: `normalized_name` = trim + minúsculas + sem acento + singular (heurística pt-BR com lista de exceções). Único por usuário.
   - Captura sem quantidade explícita ("ovos") tem `quantity: null` → nunca sobrescreve a quantidade existente.
@@ -66,7 +73,8 @@ Features do app: `auth`, `shopping-list`, `categories`, `quick-capture` (`voice/
   - Nome e categoria do item existente são preservados.
 - **Mensagens de captura** usam forma neutra ("Adicionado: ovos") para evitar concordância de gênero.
 - **Comprados**: seção própria, com ação "limpar comprados".
-- **Offline**: app funciona offline; mutations ficam em fila e sincronizam ao voltar a rede. Servidor é a fonte da verdade.
+- **Offline**: cache do TanStack Query persistido (AsyncStorage). Mutations usam `setMutationDefaults` com chaves fixas e `scope` `items` (execução em série), então ficam pausadas offline e são retomadas inclusive após reiniciar o app. Captura offline cria item local (`id` com prefixo `local-`) replicando a regra de duplicata; itens locais ficam bloqueados para edição até sincronizar. Servidor é a fonte da verdade.
+- **Captura rápida**: widget (`QuickCapture`) e atalhos do ícone abrem `meumercado://capture?mode=voice|text&source=widget|shortcut`, uma tela modal transparente que salva e fecha o app (`BackHandler.exitApp`). O widget mostra o número de pendentes (atualizado ao mudar a query `items`).
 - **Distribuição**: APK interno por enquanto. App Actions / "Ok Google" só após publicar na Play Store.
 
 ## Modelo de dados
@@ -108,8 +116,16 @@ API (`apps/api`):
 - `npm run dev` — API local em `http://localhost:8787` (D1 local)
 - `npm run db:generate` — gera migration a partir das tabelas Drizzle (`src/shared/db/schema.ts`)
 - `npm run db:migrate:local` / `npm run db:migrate:remote`
-- `npm run token:create -- --email <email> [--label <nome>] [--remote]` — cria usuário (se não existir) e token de captura
+- `npm run token:create -- --email <email> [--label <nome>] [--remote]` — cria token de captura para um usuário existente
+- `npm run user:set-password -- --email <email> [--remote]` — define senha aleatória (imprime no terminal)
 - `npm run deploy`
+
+App (`apps/mobile`):
+
+- `npx expo prebuild -p android --clean` e `cd android && ./gradlew assembleRelease` — APK em `android/app/build/outputs/apk/release/`
+- `npx expo run:android` — dev build no celular conectado (USB)
+- Expo Go **não** funciona (módulos nativos: voz, widget, atalhos)
+- `npx vitest run` — testes de domínio (só arquivos sem React Native)
 
 ## Notas técnicas
 
@@ -119,3 +135,6 @@ API (`apps/api`):
 - Banco via Drizzle ORM; colunas em snake_case, campos TS em camelCase. A tabela `user` segue o schema do Better Auth.
 - Use-cases recebem repositórios por interface (`domain/*-repository.ts`); implementações D1 em `data/`, fakes em memória em `testing/`.
 - Testes de API com curl no Git Bash corrompem acentos; use um script Node (`fetch`) para testar payloads com UTF-8.
+- Better Auth exige `Origin` quando a requisição tem `Sec-Fetch-*` (o `fetch` do Node envia). Para simular o app, teste com curl.
+- No ambiente do Claude Code a rede é restrita: não alcança `*.workers.dev` nem baixa o Gradle. Build do APK e testes em produção são feitos pelo usuário.
+- ESLint: máximo 30 linhas por função (60 em `.tsx` do app) e 3 parâmetros; regras de hooks do React no app.

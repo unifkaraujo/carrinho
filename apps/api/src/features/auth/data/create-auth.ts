@@ -21,6 +21,9 @@ const AUTH_SCHEMA = {
 
 const SESSION_EXPIRES_IN_SECONDS = 60 * 60 * 24 * 90;
 
+const readIterations = (env: AppBindings): number | undefined =>
+  Number(env.PASSWORD_HASH_ITERATIONS) || undefined;
+
 const onUserCreated = (db: Database) => async (user: { id: string }) => {
   await seedDefaultCategories(createD1CategoriesRepository(db), user.id);
 };
@@ -33,7 +36,10 @@ export const createAuth = (env: AppBindings, db: Database) =>
     emailAndPassword: {
       enabled: true,
       minPasswordLength: 8,
-      password: { hash: hashPassword, verify: verifyPassword },
+      password: {
+        hash: (password) => hashPassword(password, readIterations(env)),
+        verify: verifyPassword,
+      },
     },
     session: { expiresIn: SESSION_EXPIRES_IN_SECONDS },
     databaseHooks: { user: { create: { after: onUserCreated(db) } } },
