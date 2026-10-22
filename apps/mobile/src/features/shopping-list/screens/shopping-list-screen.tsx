@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { KeyboardAvoidingView, RefreshControl, SectionList, StyleSheet } from 'react-native';
 import { CaptureBar } from '../../quick-capture/components/capture-bar';
 import { confirm } from '../../../shared/ui/confirm';
+import { OfflineBanner } from '../../../shared/ui/offline-banner';
 import { Screen } from '../../../shared/ui/screen';
 import { colors, spacing } from '../../../shared/ui/theme';
 import { ItemRow } from '../components/item-row';
@@ -32,6 +33,7 @@ export const ShoppingListScreen = () => {
 
   return (
     <Screen>
+      <OfflineBanner />
       <KeyboardAvoidingView style={styles.flex} behavior="padding">
         <SectionList
           sections={sections}

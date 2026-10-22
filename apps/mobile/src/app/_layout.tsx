@@ -1,27 +1,26 @@
-import { QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { useSession } from '../features/auth/hooks/use-session';
-import { queryClient } from '../bootstrap/query-client';
+import { QueryProvider } from '../bootstrap/query-provider';
+import { useAuthStatus } from '../features/auth/hooks/use-auth-status';
 import { useAppStateFocus } from '../shared/query/use-app-state-focus';
 
 SplashScreen.preventAutoHideAsync();
 
 const RootNavigator = () => {
-  const { data: session, isPending } = useSession();
+  const status = useAuthStatus();
   useEffect(() => {
-    if (!isPending) SplashScreen.hideAsync();
-  }, [isPending]);
-  if (isPending) return null;
+    if (status !== 'loading') SplashScreen.hideAsync();
+  }, [status]);
+  if (status === 'loading') return null;
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={Boolean(session)}>
+      <Stack.Protected guard={status === 'signed-in'}>
         <Stack.Screen name="(app)" />
       </Stack.Protected>
-      <Stack.Protected guard={!session}>
+      <Stack.Protected guard={status === 'signed-out'}>
         <Stack.Screen name="(auth)" />
       </Stack.Protected>
     </Stack>
@@ -31,10 +30,10 @@ const RootNavigator = () => {
 const RootLayout = () => {
   useAppStateFocus();
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryProvider>
       <StatusBar style="dark" />
       <RootNavigator />
-    </QueryClientProvider>
+    </QueryProvider>
   );
 };
 
