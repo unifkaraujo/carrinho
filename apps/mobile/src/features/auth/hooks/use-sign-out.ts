@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { authClient } from '../data/auth-client';
-import { clearSessionToken } from '../data/session-token-storage';
+import { clearSessionToken } from '../../../shared/storage/session-token-storage';
 
 export const useSignOut = () => {
   const queryClient = useQueryClient();

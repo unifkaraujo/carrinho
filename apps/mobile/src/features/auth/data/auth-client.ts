@@ -1,6 +1,6 @@
 import { createAuthClient } from 'better-auth/react';
 import { API_URL } from '../../../shared/config/api-url';
-import { readSessionToken, saveSessionToken } from './session-token-storage';
+import { readSessionToken, saveSessionToken } from '../../../shared/storage/session-token-storage';
 
 const ISSUED_TOKEN_HEADER = 'set-auth-token';
 

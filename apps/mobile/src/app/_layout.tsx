@@ -4,7 +4,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { useSession } from '../features/auth/hooks/use-session';
-import { queryClient } from '../shared/query/query-client';
+import { queryClient } from '../bootstrap/query-client';
+import { useAppStateFocus } from '../shared/query/use-app-state-focus';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -27,11 +28,14 @@ const RootNavigator = () => {
   );
 };
 
-const RootLayout = () => (
-  <QueryClientProvider client={queryClient}>
-    <StatusBar style="dark" />
-    <RootNavigator />
-  </QueryClientProvider>
-);
+const RootLayout = () => {
+  useAppStateFocus();
+  return (
+    <QueryClientProvider client={queryClient}>
+      <StatusBar style="dark" />
+      <RootNavigator />
+    </QueryClientProvider>
+  );
+};
 
 export default RootLayout;

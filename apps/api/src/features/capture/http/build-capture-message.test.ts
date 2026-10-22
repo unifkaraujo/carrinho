@@ -5,7 +5,7 @@ import { buildCaptureMessage } from './build-capture-message';
 describe('buildCaptureMessage', () => {
   it.each([
     ['created', 'Adicionado: Ovos'],
-    ['updated', 'Atualizado: Ovos (2 dúzia)'],
+    ['updated', 'Atualizado: Ovos (2 dúzias)'],
     ['reactivated', 'De volta à lista: Ovos'],
     ['unchanged', 'Já está na lista: Ovos'],
   ] as const)('monta a mensagem para %s', (outcome, expected) => {

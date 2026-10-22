@@ -3,6 +3,8 @@ import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { bearer } from 'better-auth/plugins';
 import type { Database } from '../../../shared/db/database';
 import type { AppBindings } from '../../../shared/http/app-env';
+import { createD1CategoriesRepository } from '../../categories/data/d1-categories-repository';
+import { seedDefaultCategories } from '../../categories/use-cases/seed-default-categories';
 import { hashPassword } from '../domain/hash-password';
 import { verifyPassword } from '../domain/verify-password';
 import { accountTable } from './account-table';
@@ -19,6 +21,10 @@ const AUTH_SCHEMA = {
 
 const SESSION_EXPIRES_IN_SECONDS = 60 * 60 * 24 * 90;
 
+const onUserCreated = (db: Database) => async (user: { id: string }) => {
+  await seedDefaultCategories(createD1CategoriesRepository(db), user.id);
+};
+
 export const createAuth = (env: AppBindings, db: Database) =>
   betterAuth({
     secret: env.BETTER_AUTH_SECRET,
@@ -30,6 +36,7 @@ export const createAuth = (env: AppBindings, db: Database) =>
       password: { hash: hashPassword, verify: verifyPassword },
     },
     session: { expiresIn: SESSION_EXPIRES_IN_SECONDS },
+    databaseHooks: { user: { create: { after: onUserCreated(db) } } },
     plugins: [bearer()],
     telemetry: { enabled: false },
   });
