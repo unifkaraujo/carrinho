@@ -3,6 +3,7 @@ import { registerCaptureMutation } from '../features/quick-capture/data/register
 import { registerItemMutations } from '../features/shopping-list/data/register-item-mutations';
 import { PERSISTED_CACHE_MAX_AGE_MS } from '../shared/query/query-persister';
 import { setupOnlineManager } from '../shared/query/setup-online-manager';
+import { syncWidgetWithItems } from './sync-widget-with-items';
 
 const MUTATION_RETRIES = 3;
 
@@ -16,3 +17,4 @@ export const queryClient = new QueryClient({
 setupOnlineManager();
 registerItemMutations(queryClient);
 registerCaptureMutation(queryClient);
+syncWidgetWithItems(queryClient);

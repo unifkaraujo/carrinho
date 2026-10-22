@@ -6,6 +6,7 @@ const MESSAGES: Readonly<Record<string, string>> = {
   USER_ALREADY_EXISTS: 'Já existe uma conta com este e-mail.',
   PASSWORD_TOO_SHORT: 'A senha precisa ter pelo menos 8 caracteres.',
   INVALID_EMAIL: 'E-mail inválido.',
+  INVALID_PASSWORD: 'Senha atual incorreta.',
 };
 
 const FALLBACK_MESSAGE = 'Não foi possível conectar. Verifique a internet e tente novamente.';

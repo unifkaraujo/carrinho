@@ -1,7 +1,8 @@
-import { StyleSheet, View } from 'react-native';
-import { SignOutButton } from '../../auth/components/sign-out-button';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { router } from 'expo-router';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { Heading } from '../../../shared/ui/heading';
-import { spacing } from '../../../shared/ui/theme';
+import { colors, spacing } from '../../../shared/ui/theme';
 
 interface ListHeaderProps {
   pendingCount: number;
@@ -15,7 +16,14 @@ const describePending = (count: number): string => {
 export const ListHeader = ({ pendingCount }: ListHeaderProps) => (
   <View style={styles.header}>
     <Heading title="Lista de compras" subtitle={describePending(pendingCount)} />
-    <SignOutButton />
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Configurações"
+      onPress={() => router.push('/settings')}
+      hitSlop={spacing.sm}
+    >
+      <Ionicons name="settings-outline" size={24} color={colors.muted} />
+    </Pressable>
   </View>
 );
 

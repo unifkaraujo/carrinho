@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "meumercado",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E8F5EC",
@@ -29,7 +29,32 @@
       ],
       "expo-secure-store",
       "expo-font",
-      "expo-speech-recognition"
+      [
+        "react-native-android-widget",
+        {
+          "widgets": [
+            {
+              "name": "QuickCapture",
+              "label": "Adicionar à lista",
+              "description": "Adicione itens por voz ou texto sem abrir a lista",
+              "minWidth": "250dp",
+              "minHeight": "50dp",
+              "targetCellWidth": 4,
+              "targetCellHeight": 1,
+              "resizeMode": "horizontal",
+              "widgetCategory": "home_screen",
+              "updatePeriodMillis": 0
+            }
+          ]
+        }
+      ],
+      [
+        "expo-speech-recognition",
+        {
+          "microphonePermission": "Permita o microfone para adicionar itens por voz.",
+          "androidSpeechServicePackages": ["com.google.android.googlequicksearchbox"]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
