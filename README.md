@@ -17,12 +17,17 @@ O app usa módulos nativos (voz, widget, atalhos), então **não roda no Expo Go
 
 Precisa do Android SDK e JDK 17 (já instalados aqui).
 
-```sh
+```powershell
 cd apps/mobile
 npx expo prebuild -p android --clean
 cd android
-./gradlew assembleRelease
+$env:GRADLE_USER_HOME = "D:\gradle-home"
+.\gradlew.bat assembleRelease -PreactNativeArchitectures=arm64-v8a
 ```
+
+`GRADLE_USER_HOME` no D: evita encher o C: com o cache do Gradle, e `arm64-v8a` compila só para
+a arquitetura dos celulares atuais (4x menos disco e tempo). Precisa de uns 5 GB livres no C: para os
+arquivos intermediários.
 
 O APK fica em `apps/mobile/android/app/build/outputs/apk/release/app-release.apk`.
 Copie para o celular e instale (permita "instalar apps desconhecidos"), ou com o celular no USB:
