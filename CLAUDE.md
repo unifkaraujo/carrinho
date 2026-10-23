@@ -138,5 +138,6 @@ App (`apps/mobile`):
 - Better Auth exige `Origin` quando a requisição tem `Sec-Fetch-*` (o `fetch` do Node envia). Para simular o app, teste com curl.
 - No ambiente do Claude Code a rede é restrita: não alcança `*.workers.dev` nem baixa o Gradle. Build do APK e testes em produção são feitos pelo usuário.
 - React Compiler está ligado; componentes do widget (`react-native-android-widget`) precisam de `'use no memo'` no topo do arquivo.
+- `patches/react-native-android-widget+0.24.0.patch` (aplicado no `postinstall`): `OPEN_URI` vira `PendingIntent.getActivity` em vez de broadcast + `startActivity`, que o Android bloqueia quando o app foi encerrado (abertura de tela a partir do segundo plano). Após um force-stop o primeiro toque ainda falha (o Android cancela os PendingIntents do app); o widget é redesenhado e o próximo toque funciona.
 - Release Android sem R8 (`expo-build-properties`): o R8 removia classes do WorkManager usadas pelo widget.
 - ESLint: máximo 30 linhas por função (60 em `.tsx` do app) e 3 parâmetros; regras de hooks do React no app.
