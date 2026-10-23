@@ -21,6 +21,9 @@ jobs:
           node-version: 22
           cache: npm
 
+      - name: npm 11 (mesma versão que gera o lockfile)
+        run: npm install -g npm@11.7.0
+
       - run: npm ci
 
       - name: Typecheck
