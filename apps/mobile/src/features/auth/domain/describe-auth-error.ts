@@ -7,6 +7,7 @@ const MESSAGES: Readonly<Record<string, string>> = {
   PASSWORD_TOO_SHORT: 'A senha precisa ter pelo menos 8 caracteres.',
   INVALID_EMAIL: 'E-mail inválido.',
   INVALID_PASSWORD: 'Senha atual incorreta.',
+  SERVER_ERROR: 'O servidor não conseguiu concluir. Tente novamente em instantes.',
 };
 
 const FALLBACK_MESSAGE = 'Não foi possível conectar. Verifique a internet e tente novamente.';
