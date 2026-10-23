@@ -1,3 +1,5 @@
+'use no memo';
+
 import { FlexWidget, TextWidget } from 'react-native-android-widget';
 import { colors } from '../../../shared/ui/theme';
 import { buildCaptureUri, type CaptureMode } from '../domain/capture-links';
