@@ -50,7 +50,7 @@ packages/
 Features da API: `auth`, `capture-tokens`, `items`, `categories`, `capture`.
 Features do app: `auth`, `shopping-list`, `categories`, `quick-capture` (`voice/`, `widget/`, `shortcuts/`), `capture-tokens`, `lock-screen-capture`, `settings`.
 
-Módulo nativo local: `apps/mobile/modules/quick-settings-capture` (Kotlin). Botão "Comprar" nas configurações rápidas (`TileService`) que abre uma Activity nativa com `showWhenLocked`: reconhece a voz e faz `POST /capture` com um token de captura próprio (label "Configurações rápidas"), criado pelo app após o login e guardado em SharedPreferences. A Activity nunca mostra a lista. Sem fila offline.
+Módulo nativo local: `apps/mobile/modules/quick-settings-capture` (Kotlin). Botão "Comprar" nas configurações rápidas (`TileService`) que abre uma Activity nativa com `showWhenLocked`: reconhece a voz e faz `POST /capture` com um token de captura próprio (label "Configurações rápidas"), criado pelo app após o login e guardado em SharedPreferences. A Activity nunca mostra a lista. Sem fila offline. Captura com a tela bloqueada sem desbloquear não é possível no MIUI: `startActivityAndCollapse` exige desbloqueio, e `TileService.showDialog` abre atrás do keyguard com o microfone mudo (app em segundo plano não recebe áudio).
 
 ## Decisões de domínio
 

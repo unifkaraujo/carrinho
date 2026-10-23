@@ -75,8 +75,8 @@ npx eas-cli@latest build -p android --profile preview
 2. Adicione o widget: pressione e segure a tela inicial → **Widgets** → **Meu Mercado** → "Comprar" (4x1) ou
    "Comprar (grande)" (4x2). É um botão de microfone: toque, fale o item e pronto.
 3. Botão nas configurações rápidas: puxe o Centro de controle (pela direita no MIUI/HyperOS), toque em
-   **Editar** e adicione **Comprar** (ícone de microfone). Funciona com a tela bloqueada: toque, fale o
-   item e pronto. Precisa ter aberto o app logado ao menos uma vez (ele cria o token do botão).
+   **Editar** e adicione **Comprar** (ícone de microfone). Com a tela bloqueada, o MIUI pede o desbloqueio
+   (digital/rosto) e o painel já abre ouvindo. Precisa ter aberto o app logado ao menos uma vez (ele cria o token do botão).
 4. Pressione e segure o ícone do app para ver os atalhos **Adicionar por voz** e **Digitar item**.
 5. Na primeira vez que usar a voz, permita o microfone.
 6. O atalho do HTTP Shortcuts continua funcionando. Quando quiser trocar o token: **Configurações →
