@@ -12,9 +12,10 @@ export const registerCaptureMutation = (queryClient: QueryClient) =>
   queryClient.setMutationDefaults(CAPTURE_MUTATION_KEY, {
     scope: ITEM_MUTATION_SCOPE,
     mutationFn: ({ text }: CaptureVariables) => postCapture(text),
-    ...optimisticHandlers<Item[], CaptureVariables>(
+    ...optimisticHandlers<Item[], CaptureVariables>({
       queryClient,
-      ITEMS_QUERY_KEY,
-      applyCaptureToList,
-    ),
+      queryKey: ITEMS_QUERY_KEY,
+      scopeId: ITEM_MUTATION_SCOPE.id,
+      update: applyCaptureToList,
+    }),
   });
