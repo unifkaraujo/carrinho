@@ -17,6 +17,20 @@ O app usa módulos nativos (voz, widget, atalhos), então **não roda no Expo Go
 
 Precisa do Android SDK e JDK 17 (já instalados aqui).
 
+No Windows, o build de C++ das libs nativas passa de 260 caracteres de caminho. Uma vez só:
+
+1. PowerShell **como administrador**:
+   `New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem' -Name LongPathsEnabled -Value 1 -PropertyType DWORD -Force`
+2. Trocar o `ninja.exe` do CMake do SDK pela versão 1.12.1, que suporta caminhos longos:
+
+```powershell
+$bin = "$env:LOCALAPPDATA\Android\Sdk\cmake\3.22.1\bin"
+Copy-Item "$bin\ninja.exe" "$bin\ninja-1.10-backup.exe"
+Invoke-WebRequest https://github.com/ninja-build/ninja/releases/download/v1.12.1/ninja-win.zip -OutFile "$env:TEMP\ninja-win.zip"
+Expand-Archive "$env:TEMP\ninja-win.zip" -DestinationPath $bin -Force
+& "$bin\ninja.exe" --version
+```
+
 ```powershell
 cd apps/mobile
 npx expo prebuild -p android --clean
