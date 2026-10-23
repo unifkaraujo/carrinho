@@ -17,6 +17,7 @@ const RootNavigator = () => {
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" />
       <Stack.Protected guard={status === 'signed-in'}>
         <Stack.Screen name="(app)" />
       </Stack.Protected>

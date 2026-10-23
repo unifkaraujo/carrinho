@@ -13,7 +13,7 @@ const AppLayout = () => {
         headerShadowVisible: false,
       }}
     >
-      <Stack.Screen name="index" />
+      <Stack.Screen name="list" />
       <Stack.Screen
         name="item/[id]"
         options={{ presentation: 'modal', headerShown: true, title: 'Editar item' }}
