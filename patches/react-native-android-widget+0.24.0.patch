@@ -1,0 +1,35 @@
+diff --git a/node_modules/react-native-android-widget/android/src/main/java/com/reactnativeandroidwidget/RNWidget.java b/node_modules/react-native-android-widget/android/src/main/java/com/reactnativeandroidwidget/RNWidget.java
+index e7b94e6..19711e9 100644
+--- a/node_modules/react-native-android-widget/android/src/main/java/com/reactnativeandroidwidget/RNWidget.java
++++ b/node_modules/react-native-android-widget/android/src/main/java/com/reactnativeandroidwidget/RNWidget.java
+@@ -204,6 +204,10 @@ public class RNWidget {
+     }
+ 
+     private void registerClickTask(int id, int clickableIndex, ClickableView clickableView, RemoteViews widgetView, Integer button) {
++        if ("OPEN_URI".equals(clickableView.getClickAction())) {
++            registerOpenUriActivity(id, clickableIndex, clickableView, widgetView, button);
++            return;
++        }
+         Intent intent = new Intent(appContext.getPackageName() + ".WIDGET_CLICK");
+         intent.setComponent(new ComponentName(appContext, RNWidgetUtil.getWidgetProviderClassName(appContext, widgetName)));
+         // PendingIntent matching ignores extras, so use stable data to distinguish each clickable
+@@ -230,6 +234,19 @@ public class RNWidget {
+         widgetView.setOnClickPendingIntent(button, pendingIntent);
+     }
+ 
++    private void registerOpenUriActivity(int id, int clickableIndex, ClickableView clickableView, RemoteViews widgetView, Integer button) {
++        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(clickableView.getClickActionData().getString("uri")));
++        intent.setPackage(appContext.getPackageName());
++        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
++        PendingIntent pendingIntent = PendingIntent.getActivity(
++            appContext,
++            id * 1000 + clickableIndex,
++            intent,
++            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
++        );
++        widgetView.setOnClickPendingIntent(button, pendingIntent);
++    }
++
+     private void addCollectionViews(int widgetId, RemoteViews remoteWidgetView, WidgetWithViews widgetWithViews, List<List<String>> lightImageNames, List<List<String>> darkImageNames) {
+         remoteWidgetView.removeAllViews(R.id.rn_widget_collection_container);
+ 

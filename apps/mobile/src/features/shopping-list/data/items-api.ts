@@ -1,4 +1,5 @@
 import { apiRequest } from '../../../shared/http/api-request';
+import { ignoreNotFound } from '../../../shared/http/ignore-not-found';
 import type { Item } from '../domain/item';
 import type { ItemPatch } from '../domain/item-patch';
 
@@ -9,7 +10,7 @@ export const patchItem = async (id: string, patch: ItemPatch): Promise<Item> =>
   (await apiRequest<{ item: Item }>(`/items/${id}`, { method: 'PATCH', body: patch })).item;
 
 export const deleteItem = (id: string): Promise<undefined> =>
-  apiRequest<undefined>(`/items/${id}`, { method: 'DELETE' });
+  ignoreNotFound(apiRequest<undefined>(`/items/${id}`, { method: 'DELETE' }));
 
 export const deleteBoughtItems = (): Promise<undefined> =>
   apiRequest<undefined>('/items/bought', { method: 'DELETE' });

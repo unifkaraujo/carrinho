@@ -36,11 +36,23 @@
             {
               "name": "QuickCapture",
               "label": "Comprar",
-              "description": "Adicione itens à lista falando, sem abrir o app",
-              "minWidth": "40dp",
+              "minWidth": "250dp",
               "minHeight": "40dp",
-              "targetCellWidth": 1,
+              "targetCellWidth": 4,
               "targetCellHeight": 1,
+              "description": "Adicione itens à lista falando, sem abrir o app",
+              "resizeMode": "none",
+              "widgetCategory": "home_screen",
+              "updatePeriodMillis": 0
+            },
+            {
+              "name": "QuickCaptureLarge",
+              "label": "Comprar (grande)",
+              "minWidth": "250dp",
+              "minHeight": "110dp",
+              "targetCellWidth": 4,
+              "targetCellHeight": 2,
+              "description": "Adicione itens à lista falando, sem abrir o app",
               "resizeMode": "none",
               "widgetCategory": "home_screen",
               "updatePeriodMillis": 0
