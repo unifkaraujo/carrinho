@@ -24,7 +24,8 @@ jobs:
       - name: npm 11 (mesma versão que gera o lockfile)
         run: npm install -g npm@11.7.0
 
-      - run: npm ci
+      - name: Instalar dependências
+        run: npm install --no-audit --no-fund
 
       - name: Typecheck
         run: npm run typecheck
