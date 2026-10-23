@@ -52,7 +52,17 @@
         "expo-speech-recognition",
         {
           "microphonePermission": "Permita o microfone para adicionar itens por voz.",
-          "androidSpeechServicePackages": ["com.google.android.googlequicksearchbox"]
+          "androidSpeechServicePackages": [
+            "com.google.android.googlequicksearchbox"
+          ]
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableMinifyInReleaseBuilds": false
+          }
         }
       ]
     ],
@@ -60,6 +70,8 @@
       "typedRoutes": true,
       "reactCompiler": true
     },
-    "platforms": ["android"]
+    "platforms": [
+      "android"
+    ]
   }
 }
