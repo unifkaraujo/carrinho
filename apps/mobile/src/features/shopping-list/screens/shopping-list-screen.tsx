@@ -17,7 +17,7 @@ import { useListSections } from '../hooks/use-list-sections';
 const openItem = (item: Item) => router.push({ pathname: '/item/[id]', params: { id: item.id } });
 
 export const ShoppingListScreen = () => {
-  const { items, sections, pendingCount, refetch } = useListSections();
+  const { items, sections, pendingCount, boughtCount, refetch } = useListSections();
   const actions = useItemActions();
 
   const clearAction = {
@@ -41,7 +41,7 @@ export const ShoppingListScreen = () => {
           contentContainerStyle={styles.content}
           stickySectionHeadersEnabled={false}
           keyboardShouldPersistTaps="handled"
-          ListHeaderComponent={<ListHeader pendingCount={pendingCount} />}
+          ListHeaderComponent={<ListHeader pendingCount={pendingCount} boughtCount={boughtCount} />}
           ListEmptyComponent={
             <ListEmptyState isError={items.isError} isPending={items.isPending} onRetry={refetch} />
           }
@@ -76,5 +76,5 @@ export const ShoppingListScreen = () => {
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  content: { padding: spacing.lg },
+  content: { paddingHorizontal: spacing.md + 4, paddingTop: spacing.md, paddingBottom: spacing.xl },
 });

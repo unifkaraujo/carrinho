@@ -10,6 +10,7 @@ export const ListEmptyState = ({ isError, isPending, onRetry }: ListEmptyStatePr
   if (isError) {
     return (
       <MessageState
+        icon="cloud-offline-outline"
         title="Não foi possível carregar"
         description="Verifique a internet."
         actionLabel="Tentar de novo"
@@ -19,6 +20,10 @@ export const ListEmptyState = ({ isError, isPending, onRetry }: ListEmptyStatePr
   }
   if (isPending) return null;
   return (
-    <MessageState title="Lista vazia" description="Adicione itens pelo widget, pela voz ou aqui." />
+    <MessageState
+      icon="cart-outline"
+      title="Carrinho vazio"
+      description="Fale ou digite um item aqui embaixo, ou use o widget Comprar na tela inicial."
+    />
   );
 };

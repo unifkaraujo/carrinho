@@ -18,19 +18,31 @@ export const CaptureSheet = ({ children, onDismiss }: CaptureSheetProps) => {
         accessibilityRole="button"
         onPress={onDismiss}
       />
-      <View style={[styles.sheet, { paddingBottom: insets.bottom + spacing.lg }]}>{children}</View>
+      <View style={[styles.sheet, { paddingBottom: insets.bottom + spacing.lg }]}>
+        <View style={styles.handle} />
+        {children}
+      </View>
     </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   overlay: { flex: 1, justifyContent: 'flex-end' },
-  backdrop: { ...StyleSheet.absoluteFill, backgroundColor: 'rgba(0, 0, 0, 0.45)' },
+  backdrop: { ...StyleSheet.absoluteFill, backgroundColor: 'rgba(10, 25, 16, 0.5)' },
   sheet: {
     backgroundColor: colors.background,
-    borderTopLeftRadius: radius.md * 2,
-    borderTopRightRadius: radius.md * 2,
-    padding: spacing.lg,
+    borderTopLeftRadius: radius.lg + 4,
+    borderTopRightRadius: radius.lg + 4,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.sm + 2,
     gap: spacing.md,
+  },
+  handle: {
+    alignSelf: 'center',
+    width: 40,
+    height: 5,
+    borderRadius: 3,
+    backgroundColor: colors.border,
+    marginBottom: spacing.xs,
   },
 });

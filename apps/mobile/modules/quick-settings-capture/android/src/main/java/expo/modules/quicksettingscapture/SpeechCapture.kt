@@ -60,7 +60,7 @@ class SpeechCapture(context: Context, private val listener: SpeechCaptureListene
   private fun describeError(error: Int): String = when (error) {
     SpeechRecognizer.ERROR_NO_MATCH, SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> NO_SPEECH_MESSAGE
     SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS ->
-      "Abra o Meu Mercado e permita o uso do microfone."
+      "Abra o Carrinho e permita o uso do microfone."
     SpeechRecognizer.ERROR_NETWORK, SpeechRecognizer.ERROR_NETWORK_TIMEOUT ->
       "Sem internet para reconhecer a voz."
     else -> "Não deu para ouvir. Tente de novo."

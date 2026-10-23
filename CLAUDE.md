@@ -1,4 +1,4 @@
-# Meu Mercado
+# Carrinho (meu-mercado)
 
 App Android de lista de compras com foco em **captura rápida**: adicionar itens sem abrir o app (widget, voz, atalhos) e gerenciar a lista dentro do app.
 

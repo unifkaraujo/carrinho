@@ -25,9 +25,11 @@ export const PrimaryButton = ({ title, onPress, loading = false }: PrimaryButton
 const styles = StyleSheet.create({
   button: {
     backgroundColor: colors.primary,
-    borderRadius: radius.md,
-    paddingVertical: spacing.md,
+    borderRadius: radius.pill,
+    minHeight: 52,
+    paddingHorizontal: spacing.lg,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   pressed: { backgroundColor: colors.primaryPressed },
   loading: { opacity: 0.8 },

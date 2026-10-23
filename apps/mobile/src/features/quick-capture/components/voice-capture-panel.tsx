@@ -34,13 +34,14 @@ export const VoiceCapturePanel = ({ onCapture }: VoiceCapturePanelProps) => {
         label={speech.listening ? 'Parar de ouvir' : 'Falar de novo'}
         onPress={speech.listening ? speech.stop : speech.start}
         active={speech.listening}
+        size="lg"
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { alignItems: 'center', gap: spacing.md },
-  transcript: { fontSize: fontSize.lg, color: colors.text, textAlign: 'center' },
+  container: { alignItems: 'center', gap: spacing.md, paddingVertical: spacing.sm },
+  transcript: { fontSize: fontSize.lg, fontWeight: '600', color: colors.text, textAlign: 'center' },
   error: { fontSize: fontSize.sm, color: colors.danger, textAlign: 'center' },
 });

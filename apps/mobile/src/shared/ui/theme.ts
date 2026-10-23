@@ -1,13 +1,16 @@
 export const colors = {
-  background: '#F6F7F4',
+  background: '#F2F6EE',
   surface: '#FFFFFF',
-  text: '#1D2420',
-  muted: '#6B746E',
-  border: '#E2E6E1',
-  primary: '#2F8F5B',
-  primaryPressed: '#267A4C',
+  surfaceMuted: '#E7EFE2',
+  text: '#14231A',
+  muted: '#64736A',
+  border: '#DCE5D6',
+  primary: '#1F9D55',
+  primaryPressed: '#17844A',
+  primarySoft: '#DCF2E3',
   onPrimary: '#FFFFFF',
-  danger: '#C0392B',
+  danger: '#D64545',
+  dangerSoft: '#FBE6E6',
 } as const;
 
 export const spacing = {
@@ -19,12 +22,24 @@ export const spacing = {
 } as const;
 
 export const radius = {
-  md: 10,
+  sm: 12,
+  md: 16,
+  lg: 24,
+  pill: 999,
 } as const;
 
 export const fontSize = {
+  xs: 12,
   sm: 13,
   md: 16,
   lg: 20,
-  xl: 28,
+  xl: 30,
+} as const;
+
+export const shadow = {
+  shadowColor: '#1B3A26',
+  shadowOpacity: 0.08,
+  shadowRadius: 12,
+  shadowOffset: { width: 0, height: 4 },
+  elevation: 2,
 } as const;

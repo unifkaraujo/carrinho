@@ -54,7 +54,7 @@ object CaptureApiClient {
   }
 
   private fun describeFailure(status: Int): String = when (status) {
-    UNAUTHORIZED -> "Abra o Meu Mercado e entre na sua conta."
+    UNAUTHORIZED -> "Abra o Carrinho e entre na sua conta."
     UNPROCESSABLE -> "Não entendi o item. Tente de novo."
     else -> "Não foi possível salvar. Tente de novo."
   }

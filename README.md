@@ -1,4 +1,4 @@
-# Meu Mercado
+# Carrinho (meu-mercado)
 
 Lista de compras Android com captura rápida: widget, voz e atalhos do ícone, sem precisar abrir a lista.
 

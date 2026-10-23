@@ -10,11 +10,12 @@ export const useListSections = () => {
     () => buildListSections(items.data ?? [], categories.data ?? []),
     [items.data, categories.data],
   );
-  const pendingCount = (items.data ?? []).filter((item) => item.status === 'pending').length;
+  const all = items.data ?? [];
+  const pendingCount = all.filter((item) => item.status === 'pending').length;
   const refetch = () => {
     items.refetch();
     categories.refetch();
   };
 
-  return { items, sections, pendingCount, refetch };
+  return { items, sections, pendingCount, boughtCount: all.length - pendingCount, refetch };
 };

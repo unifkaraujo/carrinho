@@ -51,6 +51,6 @@ class CaptureSession(
 
   private companion object {
     const val CLOSE_DELAY_MS = 1400L
-    const val SIGNED_OUT_MESSAGE = "Abra o Meu Mercado e entre na sua conta para usar este botão."
+    const val SIGNED_OUT_MESSAGE = "Abra o Carrinho e entre na sua conta para usar este botão."
   }
 }

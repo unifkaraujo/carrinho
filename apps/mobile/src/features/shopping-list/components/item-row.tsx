@@ -1,7 +1,8 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { formatItemAmount, hasRelevantAmount } from '@meu-mercado/shared';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { colors, fontSize, radius, spacing } from '../../../shared/ui/theme';
+import { colors, fontSize, radius, shadow, spacing } from '../../../shared/ui/theme';
+import { displayItemName } from '../domain/display-item-name';
 import type { Item } from '../domain/item';
 import { isLocalItem } from '../domain/local-item';
 
@@ -16,33 +17,36 @@ export const ItemRow = ({ item, onToggle, onRemove, onPress }: ItemRowProps) => 
   const bought = item.status === 'bought';
   const syncing = isLocalItem(item);
   return (
-    <View style={[styles.row, syncing && styles.syncing]}>
+    <View style={[styles.row, bought && styles.rowBought, syncing && styles.syncing]}>
       <Pressable
         accessibilityRole="checkbox"
         accessibilityState={{ checked: bought }}
         accessibilityLabel={`Marcar ${item.name}`}
         onPress={() => onToggle(item)}
         hitSlop={spacing.sm}
+        style={[styles.check, bought && styles.checkOn]}
       >
-        <Ionicons
-          name={bought ? 'checkmark-circle' : 'ellipse-outline'}
-          size={26}
-          color={bought ? colors.primary : colors.muted}
-        />
+        {bought ? <Ionicons name="checkmark" size={18} color={colors.onPrimary} /> : null}
       </Pressable>
       <Pressable style={styles.content} onPress={() => onPress(item)}>
-        <Text style={[styles.name, bought && styles.boughtName]}>{item.name}</Text>
-        {hasRelevantAmount(item) ? (
-          <Text style={styles.amount}>{formatItemAmount(item)}</Text>
-        ) : null}
+        <Text style={[styles.name, bought && styles.boughtName]} numberOfLines={2}>
+          {displayItemName(item.name)}
+        </Text>
       </Pressable>
+      {hasRelevantAmount(item) ? (
+        <View style={[styles.amount, bought && styles.amountBought]}>
+          <Text style={[styles.amountText, bought && styles.amountTextBought]}>
+            {formatItemAmount(item)}
+          </Text>
+        </View>
+      ) : null}
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={`Remover ${item.name}`}
         onPress={() => onRemove(item)}
         hitSlop={spacing.sm}
       >
-        <Ionicons name="trash-outline" size={20} color={colors.muted} />
+        <Ionicons name="close" size={20} color={colors.muted} />
       </Pressable>
     </View>
   );
@@ -50,18 +54,38 @@ export const ItemRow = ({ item, onToggle, onRemove, onPress }: ItemRowProps) => 
 
 const styles = StyleSheet.create({
   row: {
+    ...shadow,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.md,
+    gap: spacing.md - 4,
     backgroundColor: colors.surface,
     borderRadius: radius.md,
     paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm + spacing.xs,
+    minHeight: 60,
     marginBottom: spacing.sm,
   },
+  rowBought: { backgroundColor: colors.surfaceMuted, shadowOpacity: 0, elevation: 0 },
   syncing: { opacity: 0.5, pointerEvents: 'none' },
-  content: { flex: 1, gap: 2 },
-  name: { fontSize: fontSize.md, color: colors.text },
-  boughtName: { color: colors.muted, textDecorationLine: 'line-through' },
-  amount: { fontSize: fontSize.sm, color: colors.muted },
+  check: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    borderWidth: 2,
+    borderColor: colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  checkOn: { backgroundColor: colors.primary },
+  content: { flex: 1, paddingVertical: spacing.md - 2 },
+  name: { fontSize: fontSize.md, fontWeight: '600', color: colors.text },
+  boughtName: { color: colors.muted, fontWeight: '400', textDecorationLine: 'line-through' },
+  amount: {
+    backgroundColor: colors.primarySoft,
+    borderRadius: radius.pill,
+    paddingHorizontal: spacing.sm + 2,
+    paddingVertical: spacing.xs,
+  },
+  amountBought: { backgroundColor: colors.border },
+  amountText: { fontSize: fontSize.sm, fontWeight: '700', color: colors.primaryPressed },
+  amountTextBought: { color: colors.muted },
 });

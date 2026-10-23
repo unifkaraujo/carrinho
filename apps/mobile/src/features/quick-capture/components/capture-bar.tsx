@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
-import { colors, fontSize, radius, spacing } from '../../../shared/ui/theme';
+import { IconButton } from '../../../shared/ui/icon-button';
+import { colors, fontSize, radius, shadow, spacing } from '../../../shared/ui/theme';
 import { useCaptureItem } from '../hooks/use-capture-item';
 import { useSpeechCapture } from '../voice/use-speech-capture';
-import { IconButton } from '../../../shared/ui/icon-button';
 
 export const CaptureBar = () => {
   const [text, setText] = useState('');
@@ -20,14 +20,15 @@ export const CaptureBar = () => {
   return (
     <View style={styles.container}>
       {speech.error ? <Text style={styles.error}>{speech.error}</Text> : null}
-      <View style={styles.row}>
+      <View style={styles.bar}>
         <TextInput
           style={styles.input}
           value={speech.listening ? speech.transcript : text}
           onChangeText={setText}
           editable={!speech.listening}
-          placeholder={speech.listening ? 'Ouvindo…' : 'Adicionar item (ex.: 2 dúzias de ovos)'}
+          placeholder={speech.listening ? 'Ouvindo…' : 'Adicionar item, ex.: 2 dúzias de ovos'}
           placeholderTextColor={colors.muted}
+          selectionColor={colors.primary}
           returnKeyType="done"
           submitBehavior="submit"
           onSubmitEditing={submit}
@@ -51,22 +52,22 @@ const styles = StyleSheet.create({
   container: {
     gap: spacing.xs,
     paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    backgroundColor: colors.background,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
+    paddingTop: spacing.xs,
+    paddingBottom: spacing.sm,
   },
-  row: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  input: {
-    flex: 1,
+  bar: {
+    ...shadow,
+    shadowOpacity: 0.12,
+    elevation: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
     backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radius.md * 2,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm + spacing.xs,
-    fontSize: fontSize.md,
-    color: colors.text,
+    borderRadius: radius.pill,
+    paddingLeft: spacing.md + 4,
+    paddingRight: spacing.xs + 2,
+    paddingVertical: spacing.xs + 2,
   },
-  error: { fontSize: fontSize.sm, color: colors.danger },
+  input: { flex: 1, fontSize: fontSize.md, color: colors.text, paddingVertical: spacing.sm },
+  error: { fontSize: fontSize.sm, color: colors.danger, textAlign: 'center' },
 });

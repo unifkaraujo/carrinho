@@ -35,11 +35,12 @@ export const EditItemScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: item } = useItem(id);
 
-  if (!item) return <MessageState title="Item não encontrado" />;
+  if (!item) return <MessageState icon="search-outline" title="Item não encontrado" />;
   return (
     <ScrollScreen>
       {isLocalItem(item) ? (
         <MessageState
+          icon="sync-outline"
           title="Sincronizando…"
           description="Este item ainda está sendo salvo. Tente editar em instantes."
         />

@@ -3,7 +3,7 @@ import { colors, fontSize, spacing } from './theme';
 
 interface HeadingProps {
   title: string;
-  subtitle?: string;
+  subtitle?: string | undefined;
 }
 
 export const Heading = ({ title, subtitle }: HeadingProps) => (
@@ -17,6 +17,6 @@ export const Heading = ({ title, subtitle }: HeadingProps) => (
 
 const styles = StyleSheet.create({
   container: { gap: spacing.xs },
-  title: { fontSize: fontSize.xl, fontWeight: '800', color: colors.text },
+  title: { fontSize: fontSize.xl, fontWeight: '800', color: colors.text, letterSpacing: -0.6 },
   subtitle: { fontSize: fontSize.md, color: colors.muted },
 });

@@ -4,9 +4,11 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
+import android.view.WindowInsets
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.LinearLayout
@@ -20,10 +22,15 @@ class CaptureSheetView(
   private val status = text(STATUS_SIZE_SP, Typeface.BOLD, TEXT_COLOR)
   private val transcript = text(TRANSCRIPT_SIZE_SP, Typeface.NORMAL, MUTED_COLOR)
   private val retryButton = button("Falar de novo", PRIMARY_COLOR, Color.WHITE, onRetry)
+  private val sheet = sheet(onClose)
 
   init {
     setOnClickListener { onClose() }
-    addView(sheet(onClose), LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, Gravity.BOTTOM))
+    addView(sheet, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, Gravity.BOTTOM))
+    sheet.setOnApplyWindowInsetsListener { view, insets ->
+      view.setPadding(dp(24), dp(12), dp(24), dp(28) + bottomInset(insets))
+      insets
+    }
   }
 
   fun showListening() = show("Ouvindo… fale o item", "", retryVisible = false)
@@ -41,25 +48,45 @@ class CaptureSheetView(
   private fun show(statusText: String, transcriptText: String, retryVisible: Boolean) {
     status.text = statusText
     transcript.text = transcriptText
+    transcript.visibility = if (transcriptText.isEmpty()) View.GONE else View.VISIBLE
     retryButton.visibility = if (retryVisible) View.VISIBLE else View.GONE
   }
+
+  private fun bottomInset(insets: WindowInsets): Int =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+      insets.getInsets(WindowInsets.Type.systemBars() or WindowInsets.Type.ime()).bottom
+    } else {
+      @Suppress("DEPRECATION")
+      insets.systemWindowInsetBottom
+    }
 
   private fun sheet(onClose: () -> Unit) = LinearLayout(context).apply {
     orientation = LinearLayout.VERTICAL
     gravity = Gravity.CENTER_HORIZONTAL
     background = roundedTop(BACKGROUND_COLOR)
-    setPadding(dp(24), dp(24), dp(24), dp(40))
+    setPadding(dp(24), dp(12), dp(24), dp(28))
     isClickable = true
-    addView(text(TITLE_SIZE_SP, Typeface.BOLD, TEXT_COLOR).apply { text = "Adicionar à lista" })
-    addView(status, spaced())
-    addView(transcript, spaced())
-    addView(actions(onClose), spaced())
+    addView(handle(), LinearLayout.LayoutParams(dp(40), dp(5)))
+    addView(micBadge(), LinearLayout.LayoutParams(dp(64), dp(64)).apply { topMargin = dp(20) })
+    addView(text(TITLE_SIZE_SP, Typeface.BOLD, TEXT_COLOR).apply { text = "Adicionar ao Carrinho" }, spaced())
+    addView(status, spaced(8))
+    addView(transcript, spaced(8))
+    addView(actions(onClose), spaced(20))
+  }
+
+  private fun handle() = View(context).apply { background = rounded(BORDER_COLOR, 3) }
+
+  private fun micBadge() = TextView(context).apply {
+    text = "🎤"
+    gravity = Gravity.CENTER
+    setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
+    background = rounded(PRIMARY_SOFT_COLOR, 32)
   }
 
   private fun actions(onClose: () -> Unit) = LinearLayout(context).apply {
     gravity = Gravity.CENTER
     addView(retryButton)
-    addView(button("Fechar", SURFACE_COLOR, TEXT_COLOR, onClose), LinearLayout.LayoutParams(
+    addView(button("Fechar", SURFACE_MUTED_COLOR, TEXT_COLOR, onClose), LinearLayout.LayoutParams(
       LinearLayout.LayoutParams.WRAP_CONTENT,
       LinearLayout.LayoutParams.WRAP_CONTENT,
     ).apply { marginStart = dp(12) })
@@ -76,25 +103,28 @@ class CaptureSheetView(
     Button(context).apply {
       text = label
       isAllCaps = false
+      stateListAnimator = null
+      setTypeface(typeface, Typeface.BOLD)
       setTextColor(textColor)
-      this.background = rounded(background)
-      setPadding(dp(20), dp(10), dp(20), dp(10))
+      this.background = rounded(background, 26)
+      minHeight = dp(52)
+      setPadding(dp(24), 0, dp(24), 0)
       setOnClickListener { onPress() }
     }
 
-  private fun spaced() = LinearLayout.LayoutParams(
+  private fun spaced(top: Int = 16) = LinearLayout.LayoutParams(
     LinearLayout.LayoutParams.MATCH_PARENT,
     LinearLayout.LayoutParams.WRAP_CONTENT,
-  ).apply { topMargin = dp(16) }
+  ).apply { topMargin = dp(top) }
 
-  private fun rounded(color: Int) = GradientDrawable().apply {
+  private fun rounded(color: Int, radiusDp: Int) = GradientDrawable().apply {
     setColor(color)
-    cornerRadius = dp(24).toFloat()
+    cornerRadius = dp(radiusDp).toFloat()
   }
 
   private fun roundedTop(color: Int) = GradientDrawable().apply {
     setColor(color)
-    val radius = dp(20).toFloat()
+    val radius = dp(28).toFloat()
     cornerRadii = floatArrayOf(radius, radius, radius, radius, 0f, 0f, 0f, 0f)
   }
 
@@ -105,10 +135,12 @@ class CaptureSheetView(
     const val TITLE_SIZE_SP = 20f
     const val STATUS_SIZE_SP = 17f
     const val TRANSCRIPT_SIZE_SP = 15f
-    val BACKGROUND_COLOR = Color.parseColor("#F6F7F4")
-    val SURFACE_COLOR = Color.parseColor("#E2E6E1")
-    val TEXT_COLOR = Color.parseColor("#1D2420")
-    val MUTED_COLOR = Color.parseColor("#6B746E")
-    val PRIMARY_COLOR = Color.parseColor("#2F8F5B")
+    val BACKGROUND_COLOR = Color.parseColor("#F2F6EE")
+    val SURFACE_MUTED_COLOR = Color.parseColor("#E7EFE2")
+    val BORDER_COLOR = Color.parseColor("#DCE5D6")
+    val TEXT_COLOR = Color.parseColor("#14231A")
+    val MUTED_COLOR = Color.parseColor("#64736A")
+    val PRIMARY_COLOR = Color.parseColor("#1F9D55")
+    val PRIMARY_SOFT_COLOR = Color.parseColor("#DCF2E3")
   }
 }
