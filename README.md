@@ -9,7 +9,7 @@
 Lembrou que acabou o café? Toque no widget, diga _"2 pacotes de café"_ e pronto: o app entende a
 quantidade, junta com o que já estava na lista e funciona até sem internet.
 
-[![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
+[![CI](https://github.com/unifkaraujo/carrinho/actions/workflows/ci.yml/badge.svg)](https://github.com/unifkaraujo/carrinho/actions/workflows/ci.yml)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
 ![React Native](https://img.shields.io/badge/React_Native-0.88-61DAFB?logo=react&logoColor=black)
 ![Expo](https://img.shields.io/badge/Expo-SDK_58-000020?logo=expo&logoColor=white)
@@ -19,7 +19,13 @@ quantidade, junta com o que já estava na lista e funciona até sem internet.
 
 </div>
 
-<!-- screenshots -->
+<p align="center">
+  <img src="docs/screenshots/lista.png" width="240" alt="Lista de compras com progresso e itens por categoria" />
+  &nbsp;
+  <img src="docs/screenshots/captura-voz.png" width="240" alt="Painel de captura por voz" />
+  &nbsp;
+  <img src="docs/screenshots/editar-item.png" width="240" alt="Edição de quantidade, unidade e categoria" />
+</p>
 
 ## Por que existe
 
