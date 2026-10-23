@@ -24,8 +24,8 @@ describe('describeListSummary', () => {
 
   it('handles an empty list', () => {
     expect(describeListSummary(0, 0)).toEqual({
-      title: 'Tudo comprado',
-      subtitle: 'Sua lista está vazia',
+      title: 'Lista vazia',
+      subtitle: 'Adicione o primeiro item',
       progress: 0,
     });
   });
