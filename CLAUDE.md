@@ -54,7 +54,7 @@ Features do app: `auth`, `shopping-list`, `categories`, `quick-capture` (`voice/
 
 - **Multiusuário**: todo dado pertence a um `user_id`. Compartilhar lista no futuro = migrar para `list_id` + `list_members`.
 - **Credenciais**:
-  - Sessão do app (Better Auth, plugin `bearer`) — usada pelo app, widget e captura por voz (guardada em `expo-secure-store`). Sem cookies, então a checagem de Origin do Better Auth não se aplica ao app.
+  - Sessão do app (Better Auth, plugin `bearer`) — usada pelo app, widget e captura por voz (guardada em `expo-secure-store`). O RN guarda cookies sozinho, então a API remove o header `Cookie` antes do Better Auth (`shared/http/strip-cookies.ts`); sem isso a checagem de Origin barra POSTs (sign-out, change-password) com 403.
   - Token de captura pessoal (prefixo `mm_`) — para atalhos externos. Banco guarda só o hash SHA-256.
   - `requireUser` aceita os dois; `requireSession` só sessão (usado em `/capture-tokens`).
 - **Senhas**: PBKDF2-SHA256 via Web Crypto (hash próprio, não o scrypt padrão do Better Auth, por causa do limite de CPU do Workers). Iterações em `PASSWORD_HASH_ITERATIONS` (wrangler vars); o hash guarda as iterações usadas, então dá para mudar sem invalidar senhas.
@@ -137,4 +137,6 @@ App (`apps/mobile`):
 - Testes de API com curl no Git Bash corrompem acentos; use um script Node (`fetch`) para testar payloads com UTF-8.
 - Better Auth exige `Origin` quando a requisição tem `Sec-Fetch-*` (o `fetch` do Node envia). Para simular o app, teste com curl.
 - No ambiente do Claude Code a rede é restrita: não alcança `*.workers.dev` nem baixa o Gradle. Build do APK e testes em produção são feitos pelo usuário.
+- React Compiler está ligado; componentes do widget (`react-native-android-widget`) precisam de `'use no memo'` no topo do arquivo.
+- Release Android sem R8 (`expo-build-properties`): o R8 removia classes do WorkManager usadas pelo widget.
 - ESLint: máximo 30 linhas por função (60 em `.tsx` do app) e 3 parâmetros; regras de hooks do React no app.
