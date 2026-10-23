@@ -6,9 +6,14 @@ import type { CaptureSource } from '../domain/capture-links';
 
 const AUTO_CLOSE_DELAY_MS = 1400;
 
+const leaveApp = () => {
+  router.replace('/list');
+  BackHandler.exitApp();
+};
+
 export const closeCapture = (source: CaptureSource) => {
   if (source === 'app' && router.canGoBack()) router.back();
-  else BackHandler.exitApp();
+  else leaveApp();
 };
 
 export const useAutoCloseCapture = (status: CaptureFlowStatus, source: CaptureSource) => {

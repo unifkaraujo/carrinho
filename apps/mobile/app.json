@@ -35,13 +35,13 @@
           "widgets": [
             {
               "name": "QuickCapture",
-              "label": "Adicionar à lista",
-              "description": "Adicione itens por voz ou texto sem abrir a lista",
-              "minWidth": "250dp",
-              "minHeight": "50dp",
-              "targetCellWidth": 4,
+              "label": "Comprar",
+              "description": "Adicione itens à lista falando, sem abrir o app",
+              "minWidth": "40dp",
+              "minHeight": "40dp",
+              "targetCellWidth": 1,
               "targetCellHeight": 1,
-              "resizeMode": "horizontal",
+              "resizeMode": "none",
               "widgetCategory": "home_screen",
               "updatePeriodMillis": 0
             }
@@ -52,9 +52,7 @@
         "expo-speech-recognition",
         {
           "microphonePermission": "Permita o microfone para adicionar itens por voz.",
-          "androidSpeechServicePackages": [
-            "com.google.android.googlequicksearchbox"
-          ]
+          "androidSpeechServicePackages": ["com.google.android.googlequicksearchbox"]
         }
       ],
       [
@@ -70,8 +68,6 @@
       "typedRoutes": true,
       "reactCompiler": true
     },
-    "platforms": [
-      "android"
-    ]
+    "platforms": ["android"]
   }
 }

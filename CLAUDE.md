@@ -74,7 +74,7 @@ Features do app: `auth`, `shopping-list`, `categories`, `quick-capture` (`voice/
 - **Mensagens de captura** usam forma neutra ("Adicionado: ovos") para evitar concordância de gênero.
 - **Comprados**: seção própria, com ação "limpar comprados".
 - **Offline**: cache do TanStack Query persistido (AsyncStorage). Mutations usam `setMutationDefaults` com chaves fixas e `scope` `items` (execução em série), então ficam pausadas offline e são retomadas inclusive após reiniciar o app. Captura offline cria item local (`id` com prefixo `local-`) replicando a regra de duplicata; itens locais ficam bloqueados para edição até sincronizar. Servidor é a fonte da verdade.
-- **Captura rápida**: widget (`QuickCapture`) e atalhos do ícone abrem `meumercado://capture?mode=voice|text&source=widget|shortcut`, uma tela modal transparente que salva e fecha o app (`BackHandler.exitApp`). O widget mostra o número de pendentes (atualizado ao mudar a query `items`).
+- **Captura rápida**: widget (`QuickCapture`) e atalhos do ícone abrem `meumercado://capture?mode=voice|text&source=widget|shortcut`, uma tela modal transparente que salva e fecha o app (`BackHandler.exitApp`). O widget é um botão 1x1 "Comprar" que abre a captura por voz. Ao fechar, a captura volta para `/list` antes de sair, senão o próximo link cai na tela antiga.
 - **Distribuição**: APK interno por enquanto. App Actions / "Ok Google" só após publicar na Play Store.
 
 ## Modelo de dados

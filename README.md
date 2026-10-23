@@ -73,7 +73,7 @@ npx eas-cli@latest build -p android --profile preview
 1. Abra o app e entre com seu e-mail. A senha temporária foi informada no chat; troque em
    **Configurações → Alterar senha**.
 2. Adicione o widget: pressione e segure a tela inicial → **Widgets** → **Meu Mercado** →
-   "Adicionar à lista". Ele tem os botões **🎤 Falar** e **✏️ Digitar**.
+   "Comprar". É um botão de microfone: toque, fale o item e pronto.
 3. Pressione e segure o ícone do app para ver os atalhos **Adicionar por voz** e **Digitar item**.
 4. Na primeira vez que usar a voz, permita o microfone.
 5. O atalho do HTTP Shortcuts continua funcionando. Quando quiser trocar o token: **Configurações →
