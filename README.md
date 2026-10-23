@@ -21,13 +21,12 @@ Precisa do Android SDK e JDK 17 (já instalados aqui).
 cd apps/mobile
 npx expo prebuild -p android --clean
 cd android
-$env:GRADLE_USER_HOME = "D:\gradle-home"
 .\gradlew.bat assembleRelease -PreactNativeArchitectures=arm64-v8a
 ```
 
-`GRADLE_USER_HOME` no D: evita encher o C: com o cache do Gradle, e `arm64-v8a` compila só para
-a arquitetura dos celulares atuais (4x menos disco e tempo). Precisa de uns 5 GB livres no C: para os
-arquivos intermediários.
+`arm64-v8a` compila só para a arquitetura dos celulares atuais (4x menos disco e tempo). O build
+precisa de uns 10 GB livres no C: (cache do Gradle + arquivos intermediários). Se o C: estiver
+apertado, rode antes `$env:GRADLE_USER_HOME = "D:\gradle-home"` para guardar o cache do Gradle no D:.
 
 O APK fica em `apps/mobile/android/app/build/outputs/apk/release/app-release.apk`.
 Copie para o celular e instale (permita "instalar apps desconhecidos"), ou com o celular no USB:
