@@ -4,6 +4,8 @@ dist
 .dev.vars
 .env*
 .expo
-android
-ios
+apps/mobile/android/
+apps/mobile/ios/
 *.apk
+apps/mobile/modules/*/android/build/
+apps/mobile/modules/*/android/.cxx/
