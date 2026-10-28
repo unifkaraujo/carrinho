@@ -22,7 +22,7 @@ quantidade, junta com o que já estava na lista e funciona até sem internet.
 <p align="center">
   <img src="docs/screenshots/lista.png" width="240" alt="Lista de compras com progresso e itens por categoria" />
   &nbsp;
-  <img src="docs/screenshots/captura-config-rapidas.png" width="240" alt="Captura por voz aberta pelo botão das Configurações rápidas, por cima da tela inicial" />
+  <img src="docs/screenshots/captura-voz-fora-do-app.png" width="240" alt="Captura por voz aberta pelo botão das Configurações rápidas, por cima da tela inicial" />
   &nbsp;
   <img src="docs/screenshots/editar-item.png" width="240" alt="Edição de quantidade, unidade e categoria" />
 </p>
