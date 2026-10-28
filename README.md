@@ -20,11 +20,13 @@ quantidade, junta com o que já estava na lista e funciona até sem internet.
 </div>
 
 <p align="center">
-  <img src="docs/screenshots/lista.png" width="240" alt="Lista de compras com progresso e itens por categoria" />
+  <img src="docs/screenshots/lista.png" width="200" alt="Lista de compras com progresso e itens por categoria" />
   &nbsp;
-  <img src="docs/screenshots/captura-voz.png" width="240" alt="Painel de captura por voz" />
+  <img src="docs/screenshots/atalho-voz.png" width="200" alt="Atalho do ícone na tela inicial com a opção Adicionar por voz" />
   &nbsp;
-  <img src="docs/screenshots/editar-item.png" width="240" alt="Edição de quantidade, unidade e categoria" />
+  <img src="docs/screenshots/captura-voz.png" width="200" alt="Painel de captura por voz" />
+  &nbsp;
+  <img src="docs/screenshots/editar-item.png" width="200" alt="Edição de quantidade, unidade e categoria" />
 </p>
 
 ## Por que existe
