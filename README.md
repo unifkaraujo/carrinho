@@ -286,18 +286,6 @@ curl -X POST https://<sua-api>/capture \
 # → 201 {"outcome":"created","message":"Adicionado: ovos","item":{"quantity":2,"unit":"dúzia",...}}
 ```
 
-## Roadmap
-
-- [x] Domínio compartilhado: parse de frases e normalização com testes
-- [x] API no ar com D1, auth e tokens de captura
-- [x] App: lista por categoria, comprar, remover, limpar comprados
-- [x] Adicionar por texto e voz, editar quantidade, unidade e categoria
-- [x] Offline com cache persistido e fila de alterações
-- [x] Widgets, atalhos do ícone e botão nas configurações rápidas
-- [ ] Fila offline também no botão das configurações rápidas
-- [ ] Lista compartilhada entre pessoas (`list_id` + membros)
-- [ ] Comando de voz pelo Gemini (depende de publicação na Play Store)
-
 ## Licença
 
 [MIT](LICENSE) © Kaique Araujo
